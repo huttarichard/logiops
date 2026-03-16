@@ -45,6 +45,31 @@ buttons: (
 
 Other remappable buttons: 0x52 (middle click), 0xc4 (smart shift toggle), 0xd7 (top button), 0x1a0 (side button).
 
+## Thumb Wheel (Volume Control)
+
+The horizontal thumb wheel (HID++ 0x2150) can be diverted to custom actions. Volume control works well:
+
+```
+thumbwheel: {
+    divert: true;
+    invert: false;
+    left: {
+        mode: "OnInterval";
+        interval: 15;
+        action = { type: "Keypress"; keys: ["KEY_VOLUMEDOWN"]; };
+    };
+    right: {
+        mode: "OnInterval";
+        interval: 15;
+        action = { type: "Keypress"; keys: ["KEY_VOLUMEUP"]; };
+    };
+};
+```
+
+The `interval` controls sensitivity — lower = more frequent key presses per scroll distance. `15` is a good default.
+
+Set `divert: false` to use the thumb wheel as a native horizontal scroll instead.
+
 ## Scroll Wheel Ratchet (SmartShift)
 
 The electromagnetic scroll wheel ratchet is controlled by SmartShift V2 (HID++ 0x2111).
@@ -152,6 +177,20 @@ devices: (
     };
     haptic_feedback: {
         strength: 50;
+    };
+    thumbwheel: {
+        divert: true;
+        invert: false;
+        left: {
+            mode: "OnInterval";
+            interval: 15;
+            action = { type: "Keypress"; keys: ["KEY_VOLUMEDOWN"]; };
+        };
+        right: {
+            mode: "OnInterval";
+            interval: 15;
+            action = { type: "Keypress"; keys: ["KEY_VOLUMEUP"]; };
+        };
     };
     dpi: 1000;
 
