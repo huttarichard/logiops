@@ -17,6 +17,7 @@
  */
 #include <features/HiresScroll.h>
 #include <actions/gesture/AxisGesture.h>
+#include <cstdlib>
 #include <Device.h>
 #include <InputDevice.h>
 #include <ipc_defs.h>
@@ -76,6 +77,16 @@ void HiresScroll::_makeConfig() {
             if (conf.target.value())
                 _mode |= hidpp20::HiresScroll::Mode::Target;
         }
+
+        if (conf.bounce_threshold.has_value())
+            _bounce_threshold = conf.bounce_threshold.value();
+        else
+            _bounce_threshold = 0;
+
+        if (conf.bounce_time_ms.has_value())
+            _bounce_time_ms = conf.bounce_time_ms.value();
+        else
+            _bounce_time_ms = 0;
 
         _makeGesture(_up_gesture, conf.up, "up");
         _makeGesture(_down_gesture, conf.down, "down");
@@ -154,6 +165,20 @@ void HiresScroll::_fixGesture(const std::shared_ptr<actions::Gesture>& gesture) 
 void HiresScroll::_handleScroll(hidpp20::HiresScroll::WheelStatus event) {
     std::shared_lock lock(_config_mutex);
     auto now = std::chrono::system_clock::now();
+
+    // Bounce-back filter: drop small reverse-direction events shortly after scrolling
+    if (_bounce_threshold > 0 && _bounce_time_ms > 0 && _last_direction != 0) {
+        auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                now - _last_scroll).count();
+        int16_t current_direction = (event.deltaV > 0) ? 1 : -1;
+
+        if (current_direction != _last_direction &&
+            elapsed_ms < _bounce_time_ms &&
+            std::abs(event.deltaV) <= _bounce_threshold) {
+            return; // drop bounce event
+        }
+    }
+
     if (std::chrono::duration_cast<std::chrono::seconds>(now - _last_scroll).count() >= 1) {
         if (_up_gesture) {
             _up_gesture->release(false);

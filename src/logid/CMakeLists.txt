@@ -25,6 +25,7 @@ add_executable(logid
         features/RemapButton.cpp
         features/DeviceStatus.cpp
         features/ThumbWheel.cpp
+        features/HapticFeedback.cpp
         actions/Action.cpp
         actions/NullAction.cpp
         actions/KeypressAction.cpp
@@ -66,6 +67,7 @@ add_executable(logid
         backend/hidpp20/features/ChangeHost.cpp
         backend/hidpp20/features/WirelessDeviceStatus.cpp
         backend/hidpp20/features/ThumbWheel.cpp
+        backend/hidpp20/features/HapticFeedback.cpp
         util/task.cpp
         util/ExceptionHandler.cpp)
 

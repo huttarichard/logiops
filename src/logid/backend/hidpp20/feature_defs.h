@@ -120,7 +120,8 @@ namespace logid::backend::hidpp20 {
             FORCE_FEEDBACK = 0x8123,
             SIDETONE = 0x8300,
             EQUALIZER = 0x8310,
-            HEADSET_OUT = 0x8320
+            HEADSET_OUT = 0x8320,
+            HAPTIC_FEEDBACK = 0x19b0
         };
     }
 

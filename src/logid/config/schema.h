@@ -262,13 +262,18 @@ namespace logid::config {
         std::optional<bool> target;
         std::optional<Gesture> up;
         std::optional<Gesture> down;
+        std::optional<int> bounce_threshold;
+        std::optional<int> bounce_time_ms;
 
-        HiresScroll() : group({"hires", "invert", "target", "up", "down"},
+        HiresScroll() : group({"hires", "invert", "target", "up", "down",
+                                "bounce_threshold", "bounce_time_ms"},
                               &HiresScroll::hires,
                               &HiresScroll::invert,
                               &HiresScroll::target,
                               &HiresScroll::up,
-                              &HiresScroll::down) {}
+                              &HiresScroll::down,
+                              &HiresScroll::bounce_threshold,
+                              &HiresScroll::bounce_time_ms) {}
     };
 
     typedef std::variant<int, std::list<int>> DPI;
@@ -292,18 +297,26 @@ namespace logid::config {
 
     typedef map<uint16_t, Button, string_literal_of<keys::cid>> RemapButton;
 
+    struct HapticFeedback : public group {
+        std::optional<unsigned int> strength;
+
+        HapticFeedback() : group({"strength"},
+                                  &HapticFeedback::strength) {}
+    };
+
     struct Profile : public group {
         std::optional<DPI> dpi;
         std::optional<SmartShift> smartshift;
         std::optional<std::variant<bool, HiresScroll>> hiresscroll;
         std::optional<ThumbWheel> thumbwheel;
         std::optional<RemapButton> buttons;
+        std::optional<HapticFeedback> haptic_feedback;
 
         Profile() : group({"dpi", "smartshift", "hiresscroll",
-                           "buttons", "thumbwheel"},
+                           "buttons", "thumbwheel", "haptic_feedback"},
                           &Profile::dpi, &Profile::smartshift,
                           &Profile::hiresscroll, &Profile::buttons,
-                          &Profile::thumbwheel) {}
+                          &Profile::thumbwheel, &Profile::haptic_feedback) {}
     };
 
     struct Device : public group {

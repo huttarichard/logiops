@@ -84,6 +84,9 @@ namespace logid::features {
         std::chrono::time_point<std::chrono::system_clock> _last_scroll;
         int16_t _last_direction = 0;
 
+        int _bounce_threshold = 0;
+        int _bounce_time_ms = 0;
+
         mutable std::shared_mutex _config_mutex;
         std::reference_wrapper<std::optional<std::variant<bool, config::HiresScroll>>> _config;
 
