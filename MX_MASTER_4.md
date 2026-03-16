@@ -55,12 +55,12 @@ thumbwheel: {
     invert: false;
     left: {
         mode: "OnInterval";
-        interval: 15;
+        interval: 8;
         action = { type: "Keypress"; keys: ["KEY_VOLUMEDOWN"]; };
     };
     right: {
         mode: "OnInterval";
-        interval: 15;
+        interval: 8;
         action = { type: "Keypress"; keys: ["KEY_VOLUMEUP"]; };
     };
 };
@@ -183,12 +183,12 @@ devices: (
         invert: false;
         left: {
             mode: "OnInterval";
-            interval: 15;
+            interval: 8;
             action = { type: "Keypress"; keys: ["KEY_VOLUMEDOWN"]; };
         };
         right: {
             mode: "OnInterval";
-            interval: 15;
+            interval: 8;
             action = { type: "Keypress"; keys: ["KEY_VOLUMEUP"]; };
         };
     };
